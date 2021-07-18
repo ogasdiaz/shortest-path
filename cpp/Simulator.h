@@ -5,11 +5,19 @@
 #ifndef CPP_SIMULATOR_H_
 #define CPP_SIMULATOR_H_
 
+#include <string>
+#include <tuple>
+#include <vector>
+
+#include "Graph.h"
+
 class Simulator {
 public:
-    Simulator();
+    Simulator(std::vector<std::tuple<std::string, std::string, double>>& edges);
     ~Simulator();
+
 private:
+    Graph* _graph;
 };
 
 #endif  // CPP_SIMULATOR_H_
