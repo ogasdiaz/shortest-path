@@ -19,7 +19,7 @@ public:
     std::string GetName();
 
     void AddEdge(Vertex* vertex, Edge* edge);
-    void RemoveEdge(Vertex* vertex);
+    bool RemoveEdge(Vertex* vertex);
     std::unordered_map<Vertex*, Edge*>& GetEdges();
 private:
     int _id;

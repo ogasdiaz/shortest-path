@@ -24,10 +24,13 @@ void Vertex::AddEdge(Vertex* vertex, Edge* edge) {
     _edges[vertex] = edge;
 }
 
-void Vertex::RemoveEdge(Vertex* vertex) {
+bool Vertex::RemoveEdge(Vertex* vertex) {
     auto search = _edges.find(vertex);
-    if (search != _edges.end())
-        _edges.erase(search);
+    if (search == _edges.end())
+        return false;
+
+    _edges.erase(search);
+    return true;
 }
 
 std::unordered_map<Vertex*, Edge*>& Vertex::GetEdges() {

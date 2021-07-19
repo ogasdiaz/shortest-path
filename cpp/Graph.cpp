@@ -4,33 +4,63 @@
 
 #include "Graph.h"
 
+#include <iostream>
 #include "Edge.h"
 
-int Graph::GetVertexID(std::string name, bool register_new) {
+Edge* Graph::AddEdge(Vertex* head, Vertex* tail, double weight) {
+    Edge* edge = new Edge(weight);
+    head->AddEdge(tail, edge);
+    tail->AddEdge(head, edge);
+
+    return edge;
+}
+
+bool Graph::RemoveEdge(Vertex* head, Vertex* tail) {
+    bool response = true;
+
+    response &= head->RemoveEdge(tail);
+    response &= tail->RemoveEdge(head);
+
+    return response;
+}
+
+Vertex* Graph::AddVertex(std::string name) {
     for (auto vertex : _vertices) {
-        if (vertex->GetName() == name) {
-            return vertex->GetID();
+        if (vertex.second->GetName() == name) {
+            return vertex.second;
         }
     }
 
-    if (register_new) {
-        Vertex* vertex = new Vertex(_vertices.size(), name);
-        _vertices.push_back(vertex);
-        return vertex->GetID();
+    int vertex_id = _vertices.size();
+    Vertex* vertex = new Vertex(vertex_id, name);
+    _vertices[vertex_id] = vertex;
+
+    return vertex;
+}
+
+bool Graph::RemoveVertex(Vertex** vertex) {
+    if (!(*vertex)) {
+        return false;
     }
 
-    return -1; 
+    for (auto& [tail, edge] : (*vertex)->GetEdges()) {
+        tail->RemoveEdge(*vertex);
+    }
+
+    _vertices.erase(_vertices.find((*vertex)->GetID()));
+
+    delete *vertex;
+    *vertex = nullptr;
+
+    return true;
 }
 
-void Graph::AddEdge(int head, int tail, double weight) {
-    Vertex* headVertex = _vertices[head];
-    Vertex* tailVertex = _vertices[tail];
+std::vector<Vertex*> Graph::GetVertices() {
+    std::vector<Vertex*> response;
 
-    Edge* edge = new Edge(weight);
-    headVertex->AddEdge(tailVertex, edge);
-    tailVertex->AddEdge(headVertex, edge);
-}
+    for (auto iv: _vertices) {
+        response.push_back(iv.second);
+    }
 
-std::vector<Vertex*>& Graph::GetVertices() {
-    return _vertices;
+    return response;
 }

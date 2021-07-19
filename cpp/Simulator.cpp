@@ -5,13 +5,14 @@
 #include "Simulator.h"
 
 #include <iostream>
+#include "Vertex.h"
 
 Simulator::Simulator(std::vector<std::tuple<std::string, std::string, double>>& edges) {
     _graph = new Dijkstra();
 
     for (auto edge : edges) {
-        int head =  _graph->GetVertexID(std::get<0>(edge), true);
-        int tail =  _graph->GetVertexID(std::get<1>(edge), true);
+        Vertex* head = _graph->AddVertex(std::get<0>(edge));
+        Vertex* tail = _graph->AddVertex(std::get<1>(edge));
         double latency = std::get<2>(edge);
 
         _graph->AddEdge(head, tail, latency);
@@ -25,9 +26,8 @@ Simulator::Simulator(std::vector<std::tuple<std::string, std::string, double>>& 
         std::cout << std::endl;
     }
 
-    Vertex* A = _graph->GetVertices()[0];
-    Vertex* L = _graph->GetVertices()[14];
-
+    Vertex* A = _graph->AddVertex("A");
+    Vertex* L = _graph->AddVertex("L");
     _graph->GetShortestPath(A, L);
 }
 
