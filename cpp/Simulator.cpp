@@ -7,7 +7,7 @@
 #include <iostream>
 
 Simulator::Simulator(std::vector<std::tuple<std::string, std::string, double>>& edges) {
-    _graph = new Graph();
+    _graph = new Dijkstra();
 
     for (auto edge : edges) {
         int head =  _graph->GetVertexID(std::get<0>(edge), true);
@@ -24,6 +24,11 @@ Simulator::Simulator(std::vector<std::tuple<std::string, std::string, double>>& 
         }
         std::cout << std::endl;
     }
+
+    Vertex* A = _graph->GetVertices()[0];
+    Vertex* L = _graph->GetVertices()[14];
+
+    _graph->GetShortestPath(A, L);
 }
 
 Simulator::~Simulator() = default;

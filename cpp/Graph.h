@@ -17,7 +17,8 @@ public:
     void AddEdge(int head, int tail, double weight);
 
     std::vector<Vertex*>& GetVertices();
-private:
+
+protected:
     std::vector<Vertex*> _vertices;
 };
 

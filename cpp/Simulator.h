@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Graph.h"
+#include "Dijkstra.h"
 
 class Simulator {
 public:
@@ -17,7 +18,7 @@ public:
     ~Simulator();
 
 private:
-    Graph* _graph;
+    Dijkstra* _graph;
 };
 
 #endif  // CPP_SIMULATOR_H_
