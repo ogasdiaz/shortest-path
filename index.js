@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Sample from './Sample.js';
-import SampleWASM from './Sample.wasm';
+import Dijkstra from './wasm/Dijkstra.js';
+import DijkstraWASM from './wasm/Dijkstra.wasm';
 
-const sample = Sample({
+const dijkstra = Dijkstra({
     locateFile: () => {
-        return SampleWASM;
+        return DijkstraWASM;
     },
 });
 
-sample.then((core) => {
-    console.log(core.add(1, 2));
+dijkstra.then((module) => {
+    const d = new module.Dijkstra();
+    d.AddEdge("A", "B", 100);
+    d.GetShortestPath("A", "B");
 });
 
 ReactDOM.render(
