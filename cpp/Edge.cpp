@@ -4,10 +4,13 @@
 
 #include "Edge.h"
 
-Edge::Edge(double latency) : _latency(latency) {}
+Edge::Edge(double latency) : _latency(latency) {
+    _generator = new std::mt19937(time(NULL));
+    _distribution = new std::normal_distribution<double>(latency, 0.025 * latency);
+}
 
 Edge::~Edge() = default;
 
 double Edge::GetLatency() {
-    return _latency;
+    return (*_distribution)(*_generator);
 }

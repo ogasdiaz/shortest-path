@@ -5,6 +5,8 @@
 #ifndef CPP_EDGE_H_
 #define CPP_EDGE_H_
 
+#include <random>
+
 class Edge {
 public:
     Edge(double latency);
@@ -13,6 +15,8 @@ public:
     double GetLatency();
 private:
     double _latency;
+    std::mt19937* _generator;
+    std::normal_distribution<double>* _distribution;
 };
 
 #endif  // CPP_EDGE_H_
