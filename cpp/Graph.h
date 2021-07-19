@@ -13,8 +13,6 @@
 
 class Graph {
 public:
-    int GetVertexID(std::string name, bool register_new);
-
     // Edge methods
     Edge* AddEdge(Vertex* head, Vertex* tail, double weight);
     bool RemoveEdge(Vertex* head, Vertex* tail);
