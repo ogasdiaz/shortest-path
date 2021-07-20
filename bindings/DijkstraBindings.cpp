@@ -9,7 +9,6 @@ using namespace emscripten;
 class DijkstraBindings {
 public:
     DijkstraBindings() {
-        std::cout << "HERE" << std::endl;
         _dijkstra = new Dijkstra();
     }
     ~DijkstraBindings() = default;
@@ -32,14 +31,15 @@ public:
     }
 
     // Shortest path methods
-    void GetShortestPathBinding(std::string head, std::string tail) {
+    std::string GetShortestPathBinding(std::string head, std::string tail) {
         std::vector<Vertex*> path = _dijkstra->GetShortestPath(_dijkstra->AddVertex(head), _dijkstra->AddVertex(tail));
-        std::vector<std::string> r;
 
+        std::string path_string;
         for (auto v : path) {
-            std::cout << v->GetName() << " ";
+            path_string = path_string + v->GetName() + ",";
         }
-        std::cout << std::endl;
+        
+        return path_string;
     }
 private:
     Dijkstra* _dijkstra;

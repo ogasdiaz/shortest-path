@@ -1,11 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Fragment } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 
+const NODE_R = 5;
 const ForceGraph = ({ dijkstra }) => {
     const [graphData, SetGraphData] = useState(null);
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
+
+    const [highlightNodes, setHighlightNodes] = useState(new Set());
+    const [highlightLinks, setHighlightLinks] = useState(new Set());
+
     const fgRef = useRef();
+
+    const updateHighlight = () => {
+      setHighlightNodes(highlightNodes);
+      setHighlightLinks(highlightLinks);
+    };
 
     useEffect(() => {
         const data = [
@@ -57,16 +67,13 @@ const ForceGraph = ({ dijkstra }) => {
             links.push({
                 source: row[0],
                 target: row[1],
-                value: row[2],
             });
 
             links.push({
                 source: row[1],
                 target: row[0],
-                value: row[2],
             });
 
-            console.log(row[0], row[1], row[2]);
             dijkstra.current.AddEdge(row[0], row[1], row[2]);
         });
 
@@ -74,41 +81,70 @@ const ForceGraph = ({ dijkstra }) => {
     }, []);
 
     const getShortestPath = () => {
-        dijkstra.current.GetShortestPath(source, target);
+        let nodes = dijkstra.current.GetShortestPath(source, target);
+        nodes = nodes.split(',').filter(node => node);
+
+        highlightNodes.clear();
+        highlightLinks.clear();
+        for (let i=0; i<nodes.length; ++i) {
+            highlightNodes.add(nodes[i]);
+
+            if (i) {
+                highlightLinks.add(`${nodes[i-1]}-${nodes[i]}`);
+            }
+        }
+
+        updateHighlight();
     };
 
+    useEffect(() => {
+        if (source && target) {
+            getShortestPath();
+        }
+    }, [source, target])
+
+    if (!graphData) {
+        return null;
+    }
+
     return (
-        <div>
-            <div>
-                <input type="text" value={source} onChange={e => setSource(e.target.value)} />
-                <input type="text" value={target} onChange={e => setTarget(e.target.value)} />
-                <button onClick={getShortestPath}>Calc min path</button>
+        <Fragment>
+            <div style={{ position: 'absolute', zIndex: 10 }}>
+                <div>
+                    <select value={source} onChange={e => setSource(e.target.value)}>
+                        <option>-- Origen --</option>
+                        {graphData.nodes.map(node => (
+                            <option key={node.id} value={node.id}>{node.id}</option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <select value={target} onChange={e => setTarget(e.target.value)}>
+                        <option>-- Destino --</option>
+                        {graphData.nodes.map(node => (
+                            <option key={node.id} value={node.id}>{node.id}</option>
+                        ))}
+                    </select>
+                </div>
             </div>
-            {graphData ? (
-                <ForceGraph2D
-                    ref={fgRef}
-                    graphData={graphData}
-                    nodeCanvasObject={(node, ctx, globalScale) => {
-                        const label = node.id;
-                        const fontSize = 24/globalScale;
-                        ctx.font = `${fontSize}px Sans-Serif`;
-                        const textWidth = ctx.measureText(label).width;
-                        const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
-
-                        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                        ctx.fillRect(node.x - bckgDimensions[0] / 2, node.y - bckgDimensions[1] / 2, ...bckgDimensions);
-
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = 'steelblue';
-                        ctx.fillText(label, node.x, node.y);
-
-                        node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
-                    }}
-                    onLinkClick={link => fgRef.current.emitParticle(link)}
-                />
-            ) : null}
-        </div>
+            <ForceGraph2D
+                ref={fgRef}
+                graphData={graphData}
+                nodeRelSize={NODE_R}
+                autoPauseRedraw={false}
+                linkWidth={link => highlightLinks.has(`${link.source.id}-${link.target.id}`) ? 5 : 1}
+                linkDirectionalParticles={4}
+                linkDirectionalParticleWidth={link => highlightLinks.has(`${link.source.id}-${link.target.id}`) ? 4 : 0}
+                nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined}
+                nodeCanvasObject={(node, ctx) => {
+                    // add ring just for highlighted nodes
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, NODE_R * 1.4, 0, 2 * Math.PI, false);
+                    ctx.fillStyle = 'orange';
+                    ctx.fill();
+                }}
+            />
+        </Fragment>
     )
 }
 
