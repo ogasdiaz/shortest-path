@@ -26,9 +26,15 @@ Simulator::Simulator(std::vector<std::tuple<std::string, std::string, double>>& 
         std::cout << std::endl;
     }
 
-    Vertex* A = _graph->AddVertex("A");
-    Vertex* L = _graph->AddVertex("L");
-    _graph->GetShortestPath(A, L);
+    Vertex* A = _graph->AddVertex("H");
+    Vertex* L = _graph->AddVertex("D");
+    std::vector<Vertex*> path = _graph->GetShortestPath(A, L);
+
+    std::cout << A->GetName() << " - " << L->GetName() << std::endl;
+    for (Vertex* vertex : path) {
+        std::cout << vertex->GetName() << " ";
+    }
+    std::cout << std::endl;
 }
 
 Simulator::~Simulator() = default;

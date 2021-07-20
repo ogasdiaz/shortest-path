@@ -11,7 +11,7 @@ class Dijkstra : public ShortestPathGraph {
 public:
     Dijkstra();
     ~Dijkstra() override;
-    void GetShortestPath(Vertex* head, Vertex* tail) override;
+    std::vector<Vertex*> GetShortestPath(Vertex* head, Vertex* tail) override;
 };
 
 #endif  // CPP_DIJKSTRA_H_

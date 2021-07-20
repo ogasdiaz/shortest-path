@@ -13,7 +13,7 @@ public:
     ShortestPathGraph() = default;
     virtual ~ShortestPathGraph() = default;
 
-    virtual void GetShortestPath(Vertex* heal, Vertex* tail) = 0;
+    virtual std::vector<Vertex*> GetShortestPath(Vertex* heal, Vertex* tail) = 0;
 };
 
 #endif  // CPP_SHORTESTPATHGRAPH_H_

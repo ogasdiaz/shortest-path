@@ -33,7 +33,13 @@ public:
 
     // Shortest path methods
     void GetShortestPathBinding(std::string head, std::string tail) {
-        _dijkstra->GetShortestPath(_dijkstra->AddVertex(head), _dijkstra->AddVertex(tail));
+        std::vector<Vertex*> path = _dijkstra->GetShortestPath(_dijkstra->AddVertex(head), _dijkstra->AddVertex(tail));
+        std::vector<std::string> r;
+
+        for (auto v : path) {
+            std::cout << v->GetName() << " ";
+        }
+        std::cout << std::endl;
     }
 private:
     Dijkstra* _dijkstra;
