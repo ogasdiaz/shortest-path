@@ -135,12 +135,28 @@ const ForceGraph = ({ dijkstra }) => {
         dijkstra.current.AddEdge(sourceID, targetID, latency);
 
         // Update visuals
-        const link = {
+        graphData.links.push({
             source: sourceID,
             target: targetID,
             label: latency.toFixed(2),
-        };
-        graphData.links.push(link);
+        });
+        graphData.links.push({
+            source: targetID,
+            target: sourceID,
+            label: latency.toFixed(2),
+        });
+        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
+    }
+
+    const onRemoveLink = (sourceID, targetID) => {
+        // Update C++
+        dijkstra.current.RemoveEdge(sourceID, targetID);
+
+        // Update visuals
+        graphData.links = graphData.links.filter(link => (
+            !(link.source.id === sourceID && link.target.id === targetID) &&
+            !(link.target.id === sourceID && link.source.id === targetID)
+        ));
         SetGraphData({ nodes: graphData.nodes, links: graphData.links });
     }
 
@@ -163,10 +179,11 @@ const ForceGraph = ({ dijkstra }) => {
     return (
         <Fragment>
             <GraphActions
-                nodes={graphData.nodes}
                 links={graphData.links}
-                onAddNode={onAddNode}
+                nodes={graphData.nodes}
                 onAddLink={onAddLink}
+                onAddNode={onAddNode}
+                onRemoveLink={onRemoveLink}
                 onRemoveNode={onRemoveNode}
             />
             {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined} */}

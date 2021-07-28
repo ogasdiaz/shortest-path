@@ -38,7 +38,7 @@ const AddLink = ({ nodes, onAddLink }) => {
                         type="number"
                         className="input"
                         value={latency}
-                        onChange={(e) => setLatency(e.target.value)}
+                        onChange={(e) => setLatency(+e.target.value)}
                     />
                 </div>
             </div>
