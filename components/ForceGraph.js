@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, Fragment } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 
+import GraphActions from './GraphActions';
+
 const NODE_R = 7;
 const ForceGraph = ({ dijkstra }) => {
     const [graphData, SetGraphData] = useState(null);
@@ -105,31 +107,32 @@ const ForceGraph = ({ dijkstra }) => {
         }
     }, [source, target])
 
+    const onAddNode = (nodeID) => {
+        const duplicate = graphData.nodes.filter(node => node.id === nodeID).length;
+        if (duplicate) {
+            return alert("Este vértice ya existe");
+        }
+
+        // Update C++
+        dijkstra.current.AddVertex(nodeID);
+
+        // Update visuals
+        const node = { id: nodeID };
+        graphData.nodes.push(node);
+        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
+    }
+
     if (!graphData) {
         return null;
     }
 
     return (
         <Fragment>
-            <div style={{ position: 'absolute', zIndex: 10 }}>
-                <div>
-                    <select style={{ padding: 10 }} value={source} onChange={e => setSource(e.target.value)}>
-                        <option>-- Origen --</option>
-                        {graphData.nodes.map(node => (
-                            <option key={node.id} value={node.id}>{node.id}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <select style={{ padding: 10 }} value={target} onChange={e => setTarget(e.target.value)}>
-                        <option>-- Destino --</option>
-                        {graphData.nodes.map(node => (
-                            <option key={node.id} value={node.id}>{node.id}</option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-
+            <GraphActions
+                nodes={graphData.nodes}
+                links={graphData.links}
+                onAddNode={onAddNode}
+            />
             {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined} */}
             <ForceGraph2D
                 ref={fgRef}
