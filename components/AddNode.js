@@ -26,7 +26,10 @@ const AddNode = ({ onAddNode }) => {
                 <div className="control">
                     <button
                         className="button is-info is-fullwidth"
-                        onClick={() => onAddNode(nodeID)}
+                        onClick={() => {
+                            onAddNode(nodeID)
+                            setNodeID("");
+                        }}
                     >
                         Agregar vértice
                     </button>

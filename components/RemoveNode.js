@@ -21,7 +21,10 @@ const RemoveNode = ({ nodes, onRemoveNode }) => {
                 <div className="control">
                     <button
                         className="button is-info is-fullwidth"
-                        onClick={() => onRemoveNode(nodeID)}
+                        onClick={() => {
+                            onRemoveNode(nodeID);
+                            setNodeID("");
+                        }}
                         disabled={nodeID === ""}
                     >
                         Eliminar vértice

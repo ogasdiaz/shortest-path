@@ -37,7 +37,11 @@ const RemoveLink = ({ nodes, links, onRemoveLink }) => {
                 <div className="control">
                     <button
                         className="button is-info is-fullwidth"
-                        onClick={() => onRemoveLink(sourceID, targetID)}
+                        onClick={() => {
+                            onRemoveLink(sourceID, targetID)
+                            setSourceID("");
+                            setTargetID("");
+                        }}
                         disabled={!sourceID || !targetID}
                     >
                         Eliminar arista

@@ -27,18 +27,10 @@ const GraphActions = (props) => {
                     </select>
                 </div>
             </div>
-            {action === "add_node" ? (
-                <AddNode {...props} />
-            ) : null}
-            {action === "remove_node" ? (
-                <RemoveNode {...props} />
-            ) : null}
-            {action === "add_link" ? (
-                <AddLink {...props} />
-            ) : null}
-            {action === "remove_link" ? (
-                <RemoveLink {...props} />
-            ) : null}
+            {action === "add_link" ? <AddLink {...props} />: null}
+            {action === "add_node" ? <AddNode {...props} />: null}
+            {action === "remove_link" ? <RemoveLink {...props} />: null}
+            {action === "remove_node" ? <RemoveNode {...props} />: null}
         </div>
     );
 };

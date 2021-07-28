@@ -107,21 +107,7 @@ const ForceGraph = ({ dijkstra }) => {
         }
     }, [source, target])
 
-    const onAddNode = (nodeID) => {
-        const duplicate = graphData.nodes.filter(node => node.id === nodeID).length;
-        if (duplicate) {
-            return alert("Este vértice ya existe");
-        }
-
-        // Update C++
-        dijkstra.current.AddVertex(nodeID);
-
-        // Update visuals
-        const node = { id: nodeID };
-        graphData.nodes.push(node);
-        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
-    }
-
+    // Graph actions
     const onAddLink = (sourceID, targetID, latency) => {
         const duplicate = graphData.links.filter(link => (
             ((link.source.id == sourceID) && (link.target.id == targetID)) ||
@@ -145,6 +131,21 @@ const ForceGraph = ({ dijkstra }) => {
             target: sourceID,
             label: latency.toFixed(2),
         });
+        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
+    }
+
+    const onAddNode = (nodeID) => {
+        const duplicate = graphData.nodes.filter(node => node.id === nodeID).length;
+        if (duplicate) {
+            return alert("Este vértice ya existe");
+        }
+
+        // Update C++
+        dijkstra.current.AddVertex(nodeID);
+
+        // Update visuals
+        const node = { id: nodeID };
+        graphData.nodes.push(node);
         SetGraphData({ nodes: graphData.nodes, links: graphData.links });
     }
 

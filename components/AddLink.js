@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 
 const AddLink = ({ nodes, onAddLink }) => {
-    const [from, setFrom] = useState("");
-    const [to, setTo] = useState("");
+    const [sourceID, setSourceID] = useState("");
+    const [targetID, setTargetID] = useState("");
     const [latency, setLatency] = useState(0.0);
 
     return (
         <div>
             <div className="field">
-                <label className="label">Origen</label>
+                <label className="label">Vértice de origen</label>
                 <div className="select is-fullwidth">
-                    <select value={from} onChange={(e) => setFrom(e.target.value)}>
+                    <select value={sourceID} onChange={(e) => setSourceID(e.target.value)}>
                         <option value="">Seleccionar vértice</option>
                         {nodes.map(node => (
                             <option key={node.id} value={node.id}>{node.id}</option>
@@ -20,9 +20,9 @@ const AddLink = ({ nodes, onAddLink }) => {
             </div>
 
             <div className="field">
-                <label className="label">Destino</label>
+                <label className="label">Vértice de destino</label>
                 <div className="select is-fullwidth">
-                    <select value={to} onChange={(e) => setTo(e.target.value)}>
+                    <select value={targetID} onChange={(e) => setTargetID(e.target.value)}>
                         <option value="">Seleccionar vértice</option>
                         {nodes.map(node => (
                             <option key={node.id} value={node.id}>{node.id}</option>
@@ -46,8 +46,13 @@ const AddLink = ({ nodes, onAddLink }) => {
                 <div className="control">
                     <button
                         className="button is-info is-fullwidth"
-                        onClick={() => onAddLink(from, to, latency)}
-                        disabled={!from || !to || latency < 0.1 || from == to}
+                        onClick={() => {
+                            onAddLink(sourceID, targetID, latency);
+                            setSourceID("");
+                            setTargetID("");
+                            setLatency(0.0);
+                        }}
+                        disabled={!sourceID || !targetID || latency < 0.1 || sourceID === targetID}
                     >
                         Agregar vértice
                     </button>
