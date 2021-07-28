@@ -105,9 +105,14 @@ const ForceGraph = ({ dijkstra }) => {
         if (source && target) {
             getShortestPath();
         }
-    }, [source, target])
+    }, [graphData, source, target])
 
     // Graph actions
+    const calcShortestPath = (sourceID, targetID) => {
+        setSource(sourceID);
+        setTarget(targetID);
+    }
+
     const onAddLink = (sourceID, targetID, latency) => {
         const duplicate = graphData.links.filter(link => (
             ((link.source.id == sourceID) && (link.target.id == targetID)) ||
@@ -182,6 +187,7 @@ const ForceGraph = ({ dijkstra }) => {
             <GraphActions
                 links={graphData.links}
                 nodes={graphData.nodes}
+                calcShortestPath={calcShortestPath}
                 onAddLink={onAddLink}
                 onAddNode={onAddNode}
                 onRemoveLink={onRemoveLink}

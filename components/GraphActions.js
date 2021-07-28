@@ -4,9 +4,10 @@ import AddLink from './AddLink';
 import AddNode from './AddNode';
 import RemoveLink from './RemoveLink';
 import RemoveNode from './RemoveNode';
+import ShortestPath from './ShortestPath';
 
 const GraphActions = (props) => {
-    const [action, setAction] = useState("remove_link");
+    const [action, setAction] = useState("shortest_path");
 
     return (
         <div className="box" style={{
@@ -27,6 +28,7 @@ const GraphActions = (props) => {
                     </select>
                 </div>
             </div>
+            {action === "shortest_path" ? <ShortestPath {...props} />: null}
             {action === "add_link" ? <AddLink {...props} />: null}
             {action === "add_node" ? <AddNode {...props} />: null}
             {action === "remove_link" ? <RemoveLink {...props} />: null}
