@@ -14,10 +14,6 @@ Dijkstra::Dijkstra() = default;
 Dijkstra::~Dijkstra() = default;
 
 std::vector<Vertex*> Dijkstra::GetShortestPath(Vertex* head, Vertex* tail) {
-    // Do nothing
-    std::cout << "GetShortestPath: ";
-    std::cout << head->GetName() << " - " << tail->GetName() << std::endl;
-
     std::vector<bool> vertex_seen(_vertices.size(), false);
     std::unordered_map<Vertex*, Vertex*> parent;
     std::priority_queue<
