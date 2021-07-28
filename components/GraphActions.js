@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 
 import AddNode from './AddNode';
+import AddLink from './AddLink';
 
 const GraphActions = (props) => {
-    const [action, setAction] = useState("add_node");
+    const [action, setAction] = useState("add_link");
 
     return (
         <div className="box" style={{
@@ -25,7 +26,10 @@ const GraphActions = (props) => {
                 </div>
             </div>
             {action === "add_node" ? (
-                <AddNode onAddNode={props.onAddNode} />
+                <AddNode {...props} />
+            ) : null}
+            {action === "add_link" ? (
+                <AddLink {...props} />
             ) : null}
         </div>
     );

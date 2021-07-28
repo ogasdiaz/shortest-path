@@ -122,6 +122,28 @@ const ForceGraph = ({ dijkstra }) => {
         SetGraphData({ nodes: graphData.nodes, links: graphData.links });
     }
 
+    const onAddLink = (sourceID, targetID, latency) => {
+        const duplicate = graphData.links.filter(link => (
+            ((link.source.id == sourceID) && (link.target.id == targetID)) ||
+            ((link.target.id == sourceID) && (link.source.id == targetID))
+        )).length;
+        if (duplicate) {
+            return alert("Esta arista ya existe");
+        }
+
+        // Update C++
+        dijkstra.current.AddEdge(sourceID, targetID, latency);
+
+        // Update visuals
+        const link = {
+            source: sourceID,
+            target: targetID,
+            label: latency.toFixed(2),
+        };
+        graphData.links.push(link);
+        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
+    }
+
     if (!graphData) {
         return null;
     }
@@ -132,6 +154,7 @@ const ForceGraph = ({ dijkstra }) => {
                 nodes={graphData.nodes}
                 links={graphData.links}
                 onAddNode={onAddNode}
+                onAddLink={onAddLink}
             />
             {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined} */}
             <ForceGraph2D
