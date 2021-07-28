@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import AddNode from './AddNode';
 import AddLink from './AddLink';
+import AddNode from './AddNode';
+import RemoveNode from './RemoveNode';
 
 const GraphActions = (props) => {
-    const [action, setAction] = useState("add_link");
+    const [action, setAction] = useState("remove_node");
 
     return (
         <div className="box" style={{
@@ -27,6 +28,9 @@ const GraphActions = (props) => {
             </div>
             {action === "add_node" ? (
                 <AddNode {...props} />
+            ) : null}
+            {action === "remove_node" ? (
+                <RemoveNode {...props} />
             ) : null}
             {action === "add_link" ? (
                 <AddLink {...props} />

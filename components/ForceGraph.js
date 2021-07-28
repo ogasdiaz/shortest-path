@@ -144,6 +144,18 @@ const ForceGraph = ({ dijkstra }) => {
         SetGraphData({ nodes: graphData.nodes, links: graphData.links });
     }
 
+    const onRemoveNode = (nodeID) => {
+        // Update C++
+        dijkstra.current.RemoveVertex(nodeID);
+
+        // Update visuals
+        graphData.links = graphData.links.filter(link => (
+            link.source.id !== nodeID && link.target.id !== nodeID
+        ));
+        graphData.nodes = graphData.nodes.filter(node => node.id !== nodeID);
+        SetGraphData({ nodes: graphData.nodes, links: graphData.links });
+    }
+
     if (!graphData) {
         return null;
     }
@@ -155,6 +167,7 @@ const ForceGraph = ({ dijkstra }) => {
                 links={graphData.links}
                 onAddNode={onAddNode}
                 onAddLink={onAddLink}
+                onRemoveNode={onRemoveNode}
             />
             {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined} */}
             <ForceGraph2D
