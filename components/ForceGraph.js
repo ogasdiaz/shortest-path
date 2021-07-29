@@ -263,7 +263,7 @@ const ForceGraph = ({ dijkstra }) => {
                     // estimate fontSize to fit in link length
                     ctx.font = '1px Sans-Serif';
                     const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
-                    ctx.font = `${fontSize}px Sans-Serif`;
+                    ctx.font = `${fontSize*1.5}px Sans-Serif`;
                     const textWidth = ctx.measureText(label).width;
                     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
 
@@ -282,10 +282,11 @@ const ForceGraph = ({ dijkstra }) => {
                     ctx.restore();
                 }}
                 cooldownTicks={100}
-                onEngineStop={() => fgRef.current.zoomToFit(400, 200)}
             />
         </Fragment>
     )
 }
+
+// onEngineStop={() => fgRef.current.zoomToFit(400, 200)}
 
 export default ForceGraph;

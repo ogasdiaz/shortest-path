@@ -7,7 +7,8 @@
 #include <tuple>
 #include <vector>
 
-#include "Simulator.h"
+#include "Dijkstra.h"
+#include "Vertex.h"
 
 int main() {
     std::vector<std::tuple<std::string, std::string, double>> edges;
@@ -42,6 +43,31 @@ int main() {
     edges.push_back({"M", "N", 5.3});
     edges.push_back({"M", "O", 3.5});
 
-    // Create simulator
-    Simulator* simulator = new Simulator(edges);
+    Dijkstra* _graph = new Dijkstra();
+
+    for (auto edge : edges) {
+        Vertex* head = _graph->AddVertex(std::get<0>(edge));
+        Vertex* tail = _graph->AddVertex(std::get<1>(edge));
+        double latency = std::get<2>(edge);
+
+        _graph->AddEdge(head, tail, latency);
+    }
+
+    for (auto head : _graph->GetVertices()) {
+        std::cout << head->GetName() << ": ";
+        for (auto& [tail, edge] : head->GetEdges()) {
+            std::cout << "(" << tail->GetName() << ", " << edge->GetLatency() << ") ";
+        }
+        std::cout << std::endl;
+    }
+
+    Vertex* A = _graph->AddVertex("H");
+    Vertex* L = _graph->AddVertex("D");
+    std::vector<Vertex*> path = _graph->GetShortestPath(A, L);
+
+    std::cout << A->GetName() << " - " << L->GetName() << std::endl;
+    for (Vertex* vertex : path) {
+        std::cout << vertex->GetName() << " ";
+    }
+    std::cout << std::endl;
 }
