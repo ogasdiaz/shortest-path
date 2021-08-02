@@ -43,13 +43,13 @@ void ShortestPath::CalcAllShortestPaths() {
     _distances = new std::vector<double>(vertices.size() * vertices.size(), 1e10);
     _paths = new std::vector<int>(vertices.size() * vertices.size(), -1);
 
-    for (auto* vertex: _graph->GetVertices()) {
+    for (auto* vertex: vertices) {
         int id = _vertex_id->size();
         _vertex_id->insert(std::make_pair(vertex, id));
         _id_vertex->insert(std::make_pair(id, vertex));
     }
 
-    for (auto head : _graph->GetVertices()) {
+    for (auto head : vertices) {
         int headIX = _vertex_id->at(head);
         _distances->at(headIX * vertices.size() + headIX) = 0;
         _paths->at(headIX * vertices.size() + headIX) = 0;
@@ -111,7 +111,7 @@ std::vector<std::pair<Vertex*, Vertex*>> ShortestPath::GetRedundantEdges() {
     std::vector<Vertex*> vertices = _graph->GetVertices();
 
     // O(V + E)
-    for (auto head : _graph->GetVertices()) {
+    for (auto head : vertices) {
         int head_id = _vertex_id->at(head);
 
         for (auto& [tail, edge] : head->GetEdges()) {
