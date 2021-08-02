@@ -14,7 +14,7 @@
 
 ShortestPath::ShortestPath(Graph* graph) : _graph(graph) {
     _graph->AddObserver(this);
-    CalcAllShortestPaths();
+    _floyd_sync = false;
 }
 
 ShortestPath::~ShortestPath() {
@@ -99,6 +99,10 @@ std::vector<Vertex*> ShortestPath::GetShortestPath(Vertex* head, Vertex* tail) {
 }
 
 std::vector<std::pair<Vertex*, Vertex*>> ShortestPath::GetRedundantEdges() {
+    if (!_floyd_sync) {
+        CalcAllShortestPaths();
+    }
+
     std::vector<std::pair<Vertex*, Vertex*>> redundant_edges;
     std::vector<Vertex*> vertices = _graph->GetVertices();
 
