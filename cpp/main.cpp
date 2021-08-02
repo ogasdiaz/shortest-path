@@ -8,6 +8,8 @@
 #include <vector>
 
 #include "Dijkstra.h"
+#include "Graph.h"
+#include "ShortestPath.h"
 #include "Vertex.h"
 
 int main() {
