@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-import AddLink from './AddLink';
-import AddNode from './AddNode';
-import RemoveLink from './RemoveLink';
-import RemoveNode from './RemoveNode';
-import ShortestPath from './ShortestPath';
+import AddLink from "./AddLink";
+import AddNode from "./AddNode";
+import RemoveLink from "./RemoveLink";
+import RemoveNode from "./RemoveNode";
+import ShortestPath from "./ShortestPath";
 
 const GraphActions = (props) => {
     const [action, setAction] = useState("shortest_path");

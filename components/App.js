@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
-import Graph from '../wasm/Graph.js';
-import GraphWASM from '../wasm/Graph.wasm';
-import ForceGraph from './ForceGraph';
+import Graph from "../wasm/Graph.js";
+import GraphWASM from "../wasm/Graph.wasm";
+import ForceGraph from "./ForceGraph";
 
 const App = () => {
     const [isLoading, setLoading] = useState(true);

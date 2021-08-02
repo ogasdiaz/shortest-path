@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const RemoveNode = ({ nodes, onRemoveNode }) => {
     const [nodeID, setNodeID] = useState("");

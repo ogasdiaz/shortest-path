@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
+import React, { useState, useEffect, useRef, Fragment } from "react";
+import ForceGraph2D from "react-force-graph-2d";
 
-import GraphActions from './GraphActions';
+import GraphActions from "./GraphActions";
 
 const NODE_R = 7;
 const ForceGraph = ({ graph }) => {
@@ -56,12 +56,12 @@ const ForceGraph = ({ graph }) => {
 
         const nodeDict = {};
         data.forEach(row => {
-            if (typeof nodeDict[row[0]] === 'undefined') {
+            if (typeof nodeDict[row[0]] === "undefined") {
                 nodes.push({ id: row[0] });
                 nodeDict[row[0]] = true;
             }
 
-            if (typeof nodeDict[row[1]] === 'undefined') {
+            if (typeof nodeDict[row[1]] === "undefined") {
                 nodes.push({ id: row[1] });
                 nodeDict[row[1]] = true;
             }
@@ -86,7 +86,7 @@ const ForceGraph = ({ graph }) => {
 
     const getShortestPath = () => {
         let nodes = graph.current.GetShortestPath(source, target);
-        nodes = nodes.split(',').filter(node => node);
+        nodes = nodes.split(",").filter(node => node);
 
         highlightNodes.clear();
         highlightLinks.clear();
@@ -193,7 +193,7 @@ const ForceGraph = ({ graph }) => {
                 onRemoveLink={onRemoveLink}
                 onRemoveNode={onRemoveNode}
             />
-            {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? 'before' : undefined} */}
+            {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? "before" : undefined} */}
             <ForceGraph2D
                 ref={fgRef}
                 graphData={graphData}
@@ -207,13 +207,13 @@ const ForceGraph = ({ graph }) => {
                     if (highlightNodes.has(node.id)) {
                         ctx.beginPath();
                         ctx.arc(node.x, node.y, NODE_R * 1.4, 0, 2 * Math.PI, false);
-                        ctx.fillStyle = 'orange';
+                        ctx.fillStyle = "orange";
                         ctx.fill();
                     }
 
                     ctx.beginPath();
                     ctx.arc(node.x, node.y, NODE_R, 0, 2 * Math.PI, false);
-                    ctx.fillStyle = 'steelblue';
+                    ctx.fillStyle = "steelblue";
                     ctx.fill();
 
                     const label = node.id;
@@ -222,14 +222,14 @@ const ForceGraph = ({ graph }) => {
                     const textWidth = ctx.measureText(label).width;
                     const bckgDimensions = [textWidth, fontSize].map(n => n + fontSize * 0.2); // some padding
 
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillStyle = 'white';
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = "white";
                     ctx.fillText(label, node.x, node.y);
         
                     node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
                 }}
-                linkCanvasObjectMode={() => 'after'}
+                linkCanvasObjectMode={() => "after"}
                 linkCanvasObject={(link, ctx) => {
                     const MAX_FONT_SIZE = 4;
                     const LABEL_NODE_MARGIN = 11;
@@ -242,10 +242,10 @@ const ForceGraph = ({ graph }) => {
                     }
 
                     // ignore unbound links
-                    if (typeof start !== 'object' || typeof end !== 'object') return;
+                    if (typeof start !== "object" || typeof end !== "object") return;
 
                     // calculate label positioning
-                    const textPos = Object.assign(...['x', 'y'].map(c => ({
+                    const textPos = Object.assign(...["x", "y"].map(c => ({
                       [c]: start[c] + (end[c] - start[c]) / 2 // calc middle point
                     })));
 
@@ -261,7 +261,7 @@ const ForceGraph = ({ graph }) => {
                     const label = link.label;
 
                     // estimate fontSize to fit in link length
-                    ctx.font = '1px Sans-Serif';
+                    ctx.font = "1px Sans-Serif";
                     const fontSize = Math.min(MAX_FONT_SIZE, maxTextLength / ctx.measureText(label).width);
                     ctx.font = `${fontSize*1.5}px Sans-Serif`;
                     const textWidth = ctx.measureText(label).width;
@@ -272,12 +272,12 @@ const ForceGraph = ({ graph }) => {
                     ctx.translate(textPos.x, textPos.y);
                     ctx.rotate(textAngle);
 
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
                     ctx.fillRect(- bckgDimensions[0] / 2, - bckgDimensions[1] / 2, ...bckgDimensions);
 
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillStyle = 'darkgrey';
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.fillStyle = "darkgrey";
                     ctx.fillText(label, 0, 0);
                     ctx.restore();
                 }}
