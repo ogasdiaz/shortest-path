@@ -54,7 +54,7 @@ const AddLink = ({ nodes, onAddLink }) => {
                         }}
                         disabled={!sourceID || !targetID || latency < 0.1 || sourceID === targetID}
                     >
-                        Agregar vértice
+                        Agregar arista
                     </button>
                 </div>
             </div>
