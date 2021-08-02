@@ -4,7 +4,7 @@ import ForceGraph2D from 'react-force-graph-2d';
 import GraphActions from './GraphActions';
 
 const NODE_R = 7;
-const ForceGraph = ({ dijkstra }) => {
+const ForceGraph = ({ graph }) => {
     const [graphData, SetGraphData] = useState(null);
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
@@ -78,14 +78,14 @@ const ForceGraph = ({ dijkstra }) => {
                 label: row[2].toFixed(2),
             });
 
-            dijkstra.current.AddEdge(row[0], row[1], row[2]);
+            graph.current.AddEdge(row[0], row[1], row[2]);
         });
 
         SetGraphData({ nodes, links });
     }, []);
 
     const getShortestPath = () => {
-        let nodes = dijkstra.current.GetShortestPath(source, target);
+        let nodes = graph.current.GetShortestPath(source, target);
         nodes = nodes.split(',').filter(node => node);
 
         highlightNodes.clear();
@@ -123,7 +123,7 @@ const ForceGraph = ({ dijkstra }) => {
         }
 
         // Update C++
-        dijkstra.current.AddEdge(sourceID, targetID, latency);
+        graph.current.AddEdge(sourceID, targetID, latency);
 
         // Update visuals
         graphData.links.push({
@@ -146,7 +146,7 @@ const ForceGraph = ({ dijkstra }) => {
         }
 
         // Update C++
-        dijkstra.current.AddVertex(nodeID);
+        graph.current.AddVertex(nodeID);
 
         // Update visuals
         const node = { id: nodeID };
@@ -156,7 +156,7 @@ const ForceGraph = ({ dijkstra }) => {
 
     const onRemoveLink = (sourceID, targetID) => {
         // Update C++
-        dijkstra.current.RemoveEdge(sourceID, targetID);
+        graph.current.RemoveEdge(sourceID, targetID);
 
         // Update visuals
         graphData.links = graphData.links.filter(link => (
@@ -168,7 +168,7 @@ const ForceGraph = ({ dijkstra }) => {
 
     const onRemoveNode = (nodeID) => {
         // Update C++
-        dijkstra.current.RemoveVertex(nodeID);
+        graph.current.RemoveVertex(nodeID);
 
         // Update visuals
         graphData.links = graphData.links.filter(link => (

@@ -1,21 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
 
-import Dijkstra from '../wasm/Dijkstra.js';
-import DijkstraWASM from '../wasm/Dijkstra.wasm';
+import Graph from '../wasm/Graph.js';
+import GraphWASM from '../wasm/Graph.wasm';
 import ForceGraph from './ForceGraph';
 
 const App = () => {
     const [isLoading, setLoading] = useState(true);
-    const DijkstraInstance = useRef(null);
+    const GraphInstance = useRef(null);
 
     useEffect(() => {
-        const dijkstra = Dijkstra({
-            locateFile: () => DijkstraWASM
-        });
-
-        dijkstra.then((module) => {
-            DijkstraInstance.current = new module.Dijkstra();
+        Graph({
+            locateFile: () => GraphWASM
+        }).then((module) => {
+            GraphInstance.current = new module.Graph();
             setLoading(false);
         });
     }, []);
@@ -25,7 +22,7 @@ const App = () => {
             {isLoading ? (
                 <span>Cargando</span>
             ) : (
-                <ForceGraph dijkstra={DijkstraInstance} />
+                <ForceGraph graph={GraphInstance} />
             )}
         </div>
     )

@@ -26,6 +26,7 @@ private:
     Graph* _graph;
 
     // Store pre-computed all-pair shortest path
+    bool _prev_alloc;
     bool _floyd_sync;
     std::unordered_map<Vertex*, int>* _vertex_id;
     std::unordered_map<int, Vertex*>* _id_vertex;

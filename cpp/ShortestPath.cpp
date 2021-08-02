@@ -15,6 +15,7 @@
 ShortestPath::ShortestPath(Graph* graph) : _graph(graph) {
     _graph->AddObserver(this);
     _floyd_sync = false;
+    _prev_alloc = false;
 }
 
 ShortestPath::~ShortestPath() {
@@ -29,11 +30,14 @@ void ShortestPath::CalcAllShortestPaths() {
     std::vector<Vertex*> vertices = _graph->GetVertices();
 
     // Free previous computation
-    delete _vertex_id;
-    delete _id_vertex;
-    delete _distances;
-    delete _paths;
+    if (_prev_alloc) {
+        delete _vertex_id;
+        delete _id_vertex;
+        delete _distances;
+        delete _paths;
+    }
 
+    _prev_alloc = true;
     _vertex_id = new std::unordered_map<Vertex*, int>;
     _id_vertex = new std::unordered_map<int, Vertex*>;
     _distances = new std::vector<double>(vertices.size() * vertices.size(), 1e10);
