@@ -13,6 +13,7 @@ public:
     ~Edge();
 
     double GetLatency();
+    double GetMean();
 private:
     double _latency;
     std::mt19937* _generator;

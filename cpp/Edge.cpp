@@ -14,3 +14,7 @@ Edge::~Edge() = default;
 double Edge::GetLatency() {
     return (*_distribution)(*_generator);
 }
+
+double Edge::GetMean() {
+    return _latency;
+}
