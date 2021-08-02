@@ -4,7 +4,6 @@
 
 #include "Graph.h"
 
-#include <iostream>
 #include "Edge.h"
 
 Edge* Graph::AddEdge(Vertex* head, Vertex* tail, double weight) {
