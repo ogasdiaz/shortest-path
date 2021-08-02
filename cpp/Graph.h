@@ -6,6 +6,7 @@
 #define CPP_GRAPH_H_
 
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "Edge.h"
@@ -13,6 +14,13 @@
 
 class Graph {
 public:
+    class Observer {
+    public:
+        virtual void OnUpdate() = 0;
+    protected:
+        virtual ~Observer() {};
+    };
+
     // Edge methods
     Edge* AddEdge(Vertex* head, Vertex* tail, double weight);
     bool RemoveEdge(Vertex* head, Vertex* tail);
@@ -22,9 +30,15 @@ public:
     bool RemoveVertex(Vertex** vertex);
     std::vector<Vertex*> GetVertices();
 
+    // Observer methods
+    void AddObserver(Observer* observer);
+    void RemoveObserver(Observer* observer);
+    void NotifyObservers();
+
 protected:
     // std::vector<Vertex*> _vertices;
     std::unordered_map<int, Vertex*> _vertices;
+    std::unordered_set<Observer*> _observers;
 };
 
 #endif  // CPP_GRAPH_H_

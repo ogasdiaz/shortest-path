@@ -12,6 +12,7 @@ Edge* Graph::AddEdge(Vertex* head, Vertex* tail, double weight) {
     head->AddEdge(tail, edge);
     tail->AddEdge(head, edge);
 
+    NotifyObservers();
     return edge;
 }
 
@@ -21,6 +22,7 @@ bool Graph::RemoveEdge(Vertex* head, Vertex* tail) {
     response &= head->RemoveEdge(tail);
     response &= tail->RemoveEdge(head);
 
+    NotifyObservers();
     return response;
 }
 
@@ -35,6 +37,7 @@ Vertex* Graph::AddVertex(std::string name) {
     Vertex* vertex = new Vertex(vertex_id, name);
     _vertices[vertex_id] = vertex;
 
+    NotifyObservers();
     return vertex;
 }
 
@@ -52,6 +55,7 @@ bool Graph::RemoveVertex(Vertex** vertex) {
     delete *vertex;
     *vertex = nullptr;
 
+    NotifyObservers();
     return true;
 }
 
@@ -63,4 +67,18 @@ std::vector<Vertex*> Graph::GetVertices() {
     }
 
     return response;
+}
+
+void Graph::AddObserver(Observer* observer) {
+    _observers.insert(observer);
+}
+
+void Graph::RemoveObserver(Observer* observer) {
+    _observers.erase(_observers.find(observer));
+}
+
+void Graph::NotifyObservers() {
+    for (auto& observer : _observers) {
+        observer->OnUpdate();
+    }
 }
