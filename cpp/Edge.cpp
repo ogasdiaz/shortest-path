@@ -4,9 +4,9 @@
 
 #include "Edge.h"
 
-Edge::Edge(double latency) : _latency(latency) {
+Edge::Edge(double mean, double stddev) : _mean(mean), _stddev(stddev) {
     _generator = new std::mt19937(time(NULL));
-    _distribution = new std::normal_distribution<double>(latency, 0.025 * latency);
+    _distribution = new std::normal_distribution<double>(mean, stddev);
 }
 
 Edge::~Edge() = default;
@@ -16,5 +16,9 @@ double Edge::GetLatency() {
 }
 
 double Edge::GetMean() {
-    return _latency;
+    return _mean;
+}
+
+double Edge::GetStddev() {
+    return _stddev;
 }

@@ -9,13 +9,14 @@
 
 class Edge {
 public:
-    Edge(double latency);
+    Edge(double mean, double stddev);
     ~Edge();
 
     double GetLatency();
     double GetMean();
+    double GetStddev();
 private:
-    double _latency;
+    double _mean, _stddev;
     std::mt19937* _generator;
     std::normal_distribution<double>* _distribution;
 };
