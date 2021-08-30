@@ -3,8 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import Graph from "../wasm/Graph.js";
 import GraphWASM from "../wasm/Graph.wasm";
 import ForceGraph from "./ForceGraph";
+import Login from "./Login";
 
 const App = () => {
+    const [auth, setAuth] = useState(false);
     const [isLoading, setLoading] = useState(true);
     const GraphInstance = useRef(null);
 
@@ -16,6 +18,10 @@ const App = () => {
             setLoading(false);
         });
     }, []);
+
+    if (!auth) {
+        return <Login setAuth={setAuth} />
+    }
 
     return (
         <div>
