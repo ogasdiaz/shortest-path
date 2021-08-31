@@ -125,15 +125,32 @@ const ForceGraph = ({ graph }) => {
         const nodes = []; 
         const links = [];
         for (let i=0; i<node_count; i++) {
-            nodes.push({ id: stringID.charAt(i) });
+            nodes.push({ id: stringID.charAt(i), __edges: 0 });
         }
 
         for (let i=0; i<edge_count; i++) {
             const weight = +(4 + Math.random() * 3).toFixed(1);
-            const source = Math.floor(Math.random() * node_count);
-            let target = source;
-            while (target === source) {
-                target = Math.floor(Math.random() * node_count);
+
+            let source = 0;
+            let target = 1;
+
+            for (let j=0; j<5; j++) {
+                const tmp = Math.floor(Math.random() * node_count);
+                if (nodes[tmp].__edges < nodes[source].__edges) {
+                    source = tmp;
+                }
+            }
+
+            for (let j=0; j<5; j++) {
+                const tmp = Math.floor(Math.random() * node_count);
+
+                if (tmp === source) {
+                    continue;
+                }
+
+                if (nodes[tmp].__edges < nodes[target].__edges) {
+                    target = tmp;
+                }
             }
 
             links.push({
@@ -153,6 +170,9 @@ const ForceGraph = ({ graph }) => {
                 nodes[target].id,
                 weight
             );
+
+            nodes[source].__edges += 1;
+            nodes[target].__edges += 1;
         }
 
         SetGraphData({ nodes, links });
