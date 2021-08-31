@@ -113,6 +113,51 @@ const ForceGraph = ({ graph }) => {
         setTarget(targetID);
     }
 
+    const generateRandomGraph = (node_count, edge_count) => {
+        const nodeIds = graphData.nodes.map(node => node.id);
+
+        for (let i=0; i<nodeIds.length; i++) {
+            graph.current.RemoveVertex(nodeIds[i]);
+        }
+
+        const stringID = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ0123456789";
+
+        const nodes = []; 
+        const links = [];
+        for (let i=0; i<node_count; i++) {
+            nodes.push({ id: stringID.charAt(i) });
+        }
+
+        for (let i=0; i<edge_count; i++) {
+            const weight = +(4 + Math.random() * 3).toFixed(1);
+            const source = Math.floor(Math.random() * node_count);
+            let target = source;
+            while (target === source) {
+                target = Math.floor(Math.random() * node_count);
+            }
+
+            links.push({
+                source: nodes[source].id,
+                target: nodes[target].id,
+                label: weight.toFixed(2),
+            });
+
+            links.push({
+                source: nodes[target].id,
+                target: nodes[source].id,
+                label: weight.toFixed(2),
+            });
+
+            graph.current.AddEdge(
+                nodes[source].id,
+                nodes[target].id,
+                weight
+            );
+        }
+
+        SetGraphData({ nodes, links });
+    }
+
     const onAddLink = (sourceID, targetID, latency) => {
         const duplicate = graphData.links.filter(link => (
             ((link.source.id == sourceID) && (link.target.id == targetID)) ||
@@ -192,6 +237,7 @@ const ForceGraph = ({ graph }) => {
                 onAddNode={onAddNode}
                 onRemoveLink={onRemoveLink}
                 onRemoveNode={onRemoveNode}
+                onRandomGraph={generateRandomGraph}
             />
             {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? "before" : undefined} */}
             <ForceGraph2D

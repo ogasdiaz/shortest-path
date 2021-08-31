@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import AddLink from "./AddLink";
 import AddNode from "./AddNode";
+import RandomGraph from "./RandomGraph";
 import RemoveLink from "./RemoveLink";
 import RemoveNode from "./RemoveNode";
 import ShortestPath from "./ShortestPath";
@@ -11,10 +12,10 @@ const GraphActions = (props) => {
 
     return (
         <div className="box" style={{
-                position: "absolute",
-                zIndex: 10,
-                top: "1rem",
-                left: "1rem"
+            position: "absolute",
+            zIndex: 10,
+            top: "1rem",
+            left: "1rem"
         }}>
             <div className="field">
                 <label className="label">Aciones</label>
@@ -25,6 +26,7 @@ const GraphActions = (props) => {
                         <option value="add_node">Agregar vértice</option>
                         <option value="remove_link">Eliminar arísta</option>
                         <option value="remove_node">Eliminar vértice</option>
+                        <option value="random_graph">Nuevo grafo</option>
                     </select>
                 </div>
             </div>
@@ -33,6 +35,7 @@ const GraphActions = (props) => {
             {action === "add_node" ? <AddNode {...props} />: null}
             {action === "remove_link" ? <RemoveLink {...props} />: null}
             {action === "remove_node" ? <RemoveNode {...props} />: null}
+            {action === "random_graph" ? <RandomGraph {...props} />: null}
         </div>
     );
 };
