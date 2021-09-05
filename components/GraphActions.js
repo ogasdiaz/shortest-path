@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import AddLink from "./AddLink";
 import AddNode from "./AddNode";
+import AllPaths from "./AllPaths";
 import RandomGraph from "./RandomGraph";
 import RemoveLink from "./RemoveLink";
 import RemoveNode from "./RemoveNode";
@@ -22,6 +23,7 @@ const GraphActions = (props) => {
                 <div className="select is-fullwidth">
                     <select value={action} onChange={(e) => setAction(e.target.value)}>
                         <option value="shortest_path">Encontrar camino más corto</option>
+                        <option value="all_paths">Mostrar los caminos más cortos</option>
                         <option value="add_link">Agregar arísta</option>
                         <option value="add_node">Agregar vértice</option>
                         <option value="remove_link">Eliminar arísta</option>
@@ -31,6 +33,7 @@ const GraphActions = (props) => {
                 </div>
             </div>
             {action === "shortest_path" ? <ShortestPath {...props} />: null}
+            {action === "all_paths" ? <AllPaths {...props} />: null}
             {action === "add_link" ? <AddLink {...props} />: null}
             {action === "add_node" ? <AddNode {...props} />: null}
             {action === "remove_link" ? <RemoveLink {...props} />: null}

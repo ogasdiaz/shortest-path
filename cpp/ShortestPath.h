@@ -19,6 +19,8 @@ public:
     void CalcAllShortestPaths();
     std::vector<Vertex*> GetShortestPath(Vertex* head, Vertex* tail);
     std::vector<std::pair<Vertex*, Vertex*>> GetRedundantEdges();
+    std::vector<double>* GetDistances();
+    std::vector<double>* GetVariances();
 
 private:
     void OnUpdate() override;

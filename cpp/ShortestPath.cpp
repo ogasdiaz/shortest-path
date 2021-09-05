@@ -29,6 +29,15 @@ void ShortestPath::OnUpdate() {
 void ShortestPath::CalcAllShortestPaths() {
     std::vector<Vertex*> vertices = _graph->GetVertices();
 
+    // bubble sort
+    for (int i=0; i<vertices.size(); i++) {
+        for (int j=0; j<vertices.size() - 1; j++) {
+            if (vertices[j]->GetName() > vertices[j+1]->GetName()) {
+                std::swap(vertices[j], vertices[j+1]);
+            }
+        }
+    }
+
     // Free previous computation
     if (_prev_alloc) {
         delete _vertex_id;
@@ -145,4 +154,20 @@ std::vector<std::pair<Vertex*, Vertex*>> ShortestPath::GetRedundantEdges() {
     }
 
     return redundant_edges;
+}
+
+std::vector<double>* ShortestPath::GetDistances() {
+    if (!_floyd_sync) {
+        CalcAllShortestPaths();
+    }
+
+    return _distances;
+}
+
+std::vector<double>* ShortestPath::GetVariances() {
+    if (!_floyd_sync) {
+        CalcAllShortestPaths();
+    }
+
+    return _variances;
 }

@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef, Fragment } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 
 import GraphActions from "./GraphActions";
+import { AllPathsModal } from "./AllPaths";
 
 const NODE_R = 7;
 const ForceGraph = ({ graph }) => {
+    const [paths, setPaths] = useState(null);
     const [graphData, SetGraphData] = useState(null);
     const [source, setSource] = useState("");
     const [target, setTarget] = useState("");
@@ -111,6 +113,12 @@ const ForceGraph = ({ graph }) => {
     const calcShortestPath = (sourceID, targetID) => {
         setSource(sourceID);
         setTarget(targetID);
+    }
+
+    const calcAllPaths = () => {
+        const response = graph.current.GetAllShortestPaths();
+        const data = response.split("\n").map(row => row.split(","));
+        setPaths(data);
     }
 
     const generateRandomGraph = (node_count, edge_count) => {
@@ -253,13 +261,14 @@ const ForceGraph = ({ graph }) => {
                 links={graphData.links}
                 nodes={graphData.nodes}
                 calcShortestPath={calcShortestPath}
+                calcAllPaths={calcAllPaths}
                 onAddLink={onAddLink}
                 onAddNode={onAddNode}
                 onRemoveLink={onRemoveLink}
                 onRemoveNode={onRemoveNode}
                 onRandomGraph={generateRandomGraph}
             />
-            {/* nodeCanvasObjectMode={node => highlightNodes.has(node.id) ? "before" : undefined} */}
+            <AllPathsModal paths={paths} setPaths={setPaths} />
             <ForceGraph2D
                 ref={fgRef}
                 graphData={graphData}
@@ -352,7 +361,5 @@ const ForceGraph = ({ graph }) => {
         </Fragment>
     )
 }
-
-// onEngineStop={() => fgRef.current.zoomToFit(400, 200)}
 
 export default ForceGraph;
