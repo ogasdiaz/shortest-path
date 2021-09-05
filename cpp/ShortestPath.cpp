@@ -34,6 +34,7 @@ void ShortestPath::CalcAllShortestPaths() {
         delete _vertex_id;
         delete _id_vertex;
         delete _distances;
+        delete _variances;
         delete _paths;
     }
 
@@ -41,6 +42,7 @@ void ShortestPath::CalcAllShortestPaths() {
     _vertex_id = new std::unordered_map<Vertex*, int>;
     _id_vertex = new std::unordered_map<int, Vertex*>;
     _distances = new std::vector<double>(vertices.size() * vertices.size(), 1e10);
+    _variances = new std::vector<double>(vertices.size() * vertices.size(), 0);
     _paths = new std::vector<int>(vertices.size() * vertices.size(), -1);
 
     for (auto* vertex: vertices) {
@@ -57,6 +59,7 @@ void ShortestPath::CalcAllShortestPaths() {
         for (auto& [tail, edge] : head->GetEdges()) {
             int tailIX = _vertex_id->at(tail);
             _distances->at(headIX * vertices.size() + tailIX) = edge->GetMean();
+            _variances->at(headIX * vertices.size() + tailIX) = edge->GetStddev();
             _paths->at(headIX * vertices.size() + tailIX) = headIX;
         }
     }
@@ -65,8 +68,26 @@ void ShortestPath::CalcAllShortestPaths() {
     for (int k = 0; k < vertices.size(); k += 1) {
         for (int i = 0; i < vertices.size(); i += 1) {
             for (int j = 0; j < vertices.size(); j += 1) {
-                if (_distances->at(i * vertices.size() + j) > _distances->at(i * vertices.size() + k) + _distances->at(k * vertices.size() + j)) {
-                    _distances->at(i * vertices.size() + j) = _distances->at(i * vertices.size() + k) + _distances->at(k * vertices.size() + j);
+                double tmp_distance = _distances->at(i * vertices.size() + k) + _distances->at(k * vertices.size() + j);
+                double tmp_variance = _variances->at(i * vertices.size() + k) + _variances->at(k * vertices.size() + j);
+
+                double current_distance = _distances->at(i * vertices.size() + j);
+                double current_variance = _variances->at(i * vertices.size() + j);
+
+                bool update = false;
+                if (abs(current_distance - tmp_distance) < 1e-3) {
+                    if (abs(current_variance - tmp_variance) < 1e-3) {
+                        // Ignore equal variance
+                    } else if (current_variance > tmp_variance) {
+                        update = true;
+                    }
+                } else if (current_distance > tmp_distance) {
+                    update = true;
+                }
+
+                if (update) {
+                    _distances->at(i * vertices.size() + j) = tmp_distance;
+                    _variances->at(i * vertices.size() + j) = tmp_variance;
                     _paths->at(i * vertices.size() + j) = _paths->at(k * vertices.size() + j);
                 }
             }

@@ -7,7 +7,7 @@
 #include "Edge.h"
 
 Edge* Graph::AddEdge(Vertex* head, Vertex* tail, double weight) {
-    Edge* edge = new Edge(weight, 0.025 * weight);
+    Edge* edge = new Edge(weight, 0.025 * weight + 0.01);
     head->AddEdge(tail, edge);
     tail->AddEdge(head, edge);
 

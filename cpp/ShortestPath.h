@@ -31,6 +31,7 @@ private:
     std::unordered_map<Vertex*, int>* _vertex_id;
     std::unordered_map<int, Vertex*>* _id_vertex;
     std::vector<double>* _distances;
+    std::vector<double>* _variances;
     std::vector<int>*  _paths;
 };
 
