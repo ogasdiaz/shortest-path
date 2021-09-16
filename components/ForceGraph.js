@@ -134,6 +134,7 @@ const ForceGraph = ({ graph }) => {
         const links = [];
         for (let i=0; i<node_count; i++) {
             nodes.push({ id: stringID.charAt(i), __edges: 0 });
+            graph.current.AddVertex(stringID.charAt(i));
         }
 
         for (let i=0; i<edge_count; i++) {
