@@ -32,9 +32,11 @@ Vertex* Graph::AddVertex(std::string name) {
         }
     }
 
-    int vertex_id = _vertices.size();
+    int vertex_id = last_id;
     Vertex* vertex = new Vertex(vertex_id, name);
     _vertices[vertex_id] = vertex;
+
+    last_id += 1;
 
     NotifyObservers();
     return vertex;

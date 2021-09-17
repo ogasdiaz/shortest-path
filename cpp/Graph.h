@@ -36,7 +36,7 @@ public:
     void NotifyObservers();
 
 protected:
-    // std::vector<Vertex*> _vertices;
+    int last_id = 0;
     std::unordered_map<int, Vertex*> _vertices;
     std::unordered_set<Observer*> _observers;
 };
